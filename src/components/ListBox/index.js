@@ -1,43 +1,36 @@
 import styled from "styled-components";
-
 import Box from "../Box";
 
-export const ProfileRelations = ({ followers }) => {
-  console.log(followers);
+export const ListBox = ({ list, title, allUrl }) => {
   return (
-    <ProfileRelationsBoxWrapper>
-      <h2 className="smallTitle">Followers ({followers.length})</h2>
+    <ListBoxWrapper>
+      <h2 className="smallTitle">
+        {title}{" "}
+        <a className="boxLink" href={allUrl}>
+          ({list.length})
+        </a>
+      </h2>
       <ul>
-        {followers.slice(0, 6).map((follower) => {
+        {list.slice(0, 6).map((item) => {
           return (
-            <li key={`li_follower_${follower.id}`}>
-              <a
-                href={`/users/${follower.login}`}
-                key={`a_follower_${follower.id}`}
-              >
-                <img src={`https://github.com/${follower.login}.png`} />
-                <span>{follower.login}</span>
+            <li key={`li_${item.id}`}>
+              <a href={item.url} key={item.id} target="_blank">
+                <img src={item.image} />
+                <span>{item.title}</span>
               </a>
             </li>
           );
         })}
       </ul>
 
-      <a className="seeAll" href="/users">
+      <a className="boxLink" href={allUrl}>
         Ver todos
       </a>
-    </ProfileRelationsBoxWrapper>
+    </ListBoxWrapper>
   );
 };
 
-export const ProfileRelationsBoxWrapper = styled(Box)`
-  .seeAll {
-    font-weight: 700;
-    font-family: Verdana;
-    font-size: 14px;
-    text-decoration: none;
-    color: #2e7bb4;
-  }
+export const ListBoxWrapper = styled(Box)`
   ul {
     display: grid;
     grid-gap: 8px;
