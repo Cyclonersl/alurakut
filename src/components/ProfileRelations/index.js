@@ -1,11 +1,47 @@
-import styled from 'styled-components';
-import Box from '../Box';
+import styled from "styled-components";
+
+import Box from "../Box";
+
+export const ProfileRelations = ({ followers }) => {
+  console.log(followers);
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">Followers ({followers.length})</h2>
+      <ul>
+        {followers.slice(0, 6).map((follower) => {
+          return (
+            <li key={`li_follower_${follower.id}`}>
+              <a
+                href={`/users/${follower.login}`}
+                key={`a_follower_${follower.id}`}
+              >
+                <img src={`https://github.com/${follower.login}.png`} />
+                <span>{follower.login}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+
+      <a className="seeAll" href="/users">
+        Ver todos
+      </a>
+    </ProfileRelationsBoxWrapper>
+  );
+};
 
 export const ProfileRelationsBoxWrapper = styled(Box)`
+  .seeAll {
+    font-weight: 700;
+    font-family: Verdana;
+    font-size: 14px;
+    text-decoration: none;
+    color: #2e7bb4;
+  }
   ul {
     display: grid;
     grid-gap: 8px;
-    grid-template-columns: 1fr 1fr 1fr; 
+    grid-template-columns: 1fr 1fr 1fr;
     max-height: 220px;
     list-style: none;
   }
@@ -23,7 +59,7 @@ export const ProfileRelationsBoxWrapper = styled(Box)`
     overflow: hidden;
     border-radius: 8px;
     span {
-      color: #FFFFFF;
+      color: #ffffff;
       font-size: 10px;
       position: absolute;
       left: 0;
@@ -45,8 +81,8 @@ export const ProfileRelationsBoxWrapper = styled(Box)`
       right: 0;
       left: 0;
       bottom: 0;
-      z-indeX: 1;
-      background-image: linear-gradient(0deg,#00000073,transparent);
+      z-index: 1;
+      background-image: linear-gradient(0deg, #00000073, transparent);
     }
   }
-`; 
+`;

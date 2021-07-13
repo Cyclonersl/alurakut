@@ -1,32 +1,25 @@
+import { useEffect, useState } from "react";
 import MainGrid from "../src/components/MainGrid";
 import Box from "../src/components/Box";
 import { AlurakutMenu, OrkutNostalgicIconSet } from "../src/lib/AluraCommons";
-import { ProfileRelationsBoxWrapper } from "../src/components/ProfileRelations";
-
-function ProfileSideBar(props) {
-  return (
-    <Box>
-      <img
-        src={`https://github.com/${props.githubUser}.png`}
-        style={{ borderRadius: "8px" }}
-      />
-    </Box>
-  );
-}
+import { ProfileRelations } from "../src/components/ProfileRelations";
+import { ProfileSideBar } from "../src/components/ProfileSideBar";
+import GithubApi from "../src/api/GithubApi";
 
 export default function Home() {
   const githubUser = "cyclonersl";
-  const pessoasFavoritas = [
-    "juunegreiros",
-    "omariosouto",
-    "peas",
-    "rafaballerini",
-    "marcobrunodev",
-  ];
+
+  const [followers, setFollowers] = useState([]);
+
+  useEffect(() => {
+    GithubApi.getFollowers(githubUser).then((res) => {
+      setFollowers(res);
+    });
+  }, [githubUser]);
 
   return (
     <>
-      <AlurakutMenu />
+      <AlurakutMenu githubUser={githubUser} />
       <MainGrid>
         <div className="profileArea" style={{ gridArea: "profileArea" }}>
           <ProfileSideBar githubUser={githubUser} />
@@ -46,23 +39,7 @@ export default function Home() {
           className="profileRelationsArea"
           style={{ gridArea: "profileRelationsArea" }}
         >
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Pessoas da comunidade ({pessoasFavoritas.length})
-            </h2>
-            <ul>
-              {pessoasFavoritas.map((itemAtual) => {
-                return (
-                  <li>
-                    <a href={`/users/${itemAtual}`} key={itemAtual}>
-                      <img src={`https://github.com/${itemAtual}.png`} />
-                      <span>{itemAtual}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <ProfileRelations followers={followers} />
         </div>
       </MainGrid>
     </>
